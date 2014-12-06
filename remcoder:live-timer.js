@@ -23,7 +23,7 @@ Timer.prototype.stop = function() {
 var timers = {};
 
 // export as global
-this.Live = {
+Live = {
   Timer : Timer,
 
   update : function(interval) {
