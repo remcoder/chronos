@@ -1,4 +1,4 @@
-// Write your package code here!
+var _timers = {};
 
 function Timer(interval) {
   this.interval = interval || 1000;
@@ -20,28 +20,39 @@ Timer.prototype.stop = function() {
   this._timer = null;
 };
 
-var timers = {};
+function liveUpdate(interval) {
+  // get current reactive context
+  var ctx = Tracker.currentComputation && Tracker.currentComputation._id;
+  if (!ctx)
+    throw new Error('liveUpdate should be called from inside a reactive context.');
 
-// export as global
+  if (!_timers[ctx])
+    _timers[ctx] = new Timer(interval);
+
+  _timers[ctx].time.get(); // attach to reactive context and return current time
+}
+
+// wrapper for moment.js
+function liveMoment(/* arguments */) {
+  liveUpdate();
+  if (moment)
+    return moment.apply(null, arguments);
+}
+
+// export global
 Chronos = {
+
+  // a simple reactive timer
+  // usage: var timer = new Timer();
+  // get current time: timer.getTime();
   Timer : Timer,
 
-  update : function(interval) {
-    // get reactive context
-    var ctx = Tracker.currentComputation && Tracker.currentComputation._id;
-    if (!ctx)
-      throw new Error('Chronos.update should be called from inside a reactive context.');
-
-    if (!timers[ctx])
-      timers[ctx] = new Chronos.Timer(interval);
-
-    timers[ctx].time.get(); // attach to reactive context and return current time
-  },
-
-  // wrap moment.js
-  moment: function(/* arguments */) {
-    Chronos.update();
-    if (moment)
-      return moment.apply(null, arguments);
-  }
+  // handy util func for making reactive contexts live updating in time
+  // usage: simply call Chrono.liveUpdate() in your helper to make it execute 
+  // every interval
+  liveUpdate : liveUpdate,
+  
+  // wrapper for moment.js
+  // example usage: Chronos.liveMoment(someTimestamp).fromNow();
+  liveMoment: liveMoment
 };
