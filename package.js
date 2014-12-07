@@ -1,8 +1,8 @@
 Package.describe({
   name: 'remcoder:chronos',
   summary: 'A reactive timer',
-  version: '0.1.0',
-  git: 'git@github.com:remcoder/chronos.git'
+  version: '0.1.1',
+  git: 'https://github.com/remcoder/chronos'
 });
 
 Package.onUse(function(api) {
