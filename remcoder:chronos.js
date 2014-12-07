@@ -23,24 +23,24 @@ Timer.prototype.stop = function() {
 var timers = {};
 
 // export as global
-Live = {
+Chronos = {
   Timer : Timer,
 
   update : function(interval) {
     // get reactive context
     var ctx = Tracker.currentComputation && Tracker.currentComputation._id;
     if (!ctx)
-      throw new Error('Live.update should be called from inside a reactive context.');
+      throw new Error('Chronos.update should be called from inside a reactive context.');
 
     if (!timers[ctx])
-      timers[ctx] = new Live.Timer(interval);
+      timers[ctx] = new Chronos.Timer(interval);
 
     timers[ctx].time.get(); // attach to reactive context and return current time
   },
 
   // wrap moment.js
-  moment: function() {
-    Live.update();
+  moment: function(/* arguments */) {
+    Chronos.update();
     if (moment)
       return moment.apply(null, arguments);
   }

@@ -1,15 +1,15 @@
 Package.describe({
-  name: 'remcoder:live-timer',
+  name: 'remcoder:chronos',
   summary: 'A reactive timer',
   version: '0.1.0',
-  git: 'git@github.com:remcoder/live-timer.git'
+  git: 'git@github.com:remcoder/chronos.git'
 });
 
 Package.onUse(function(api) {
   api.versionsFrom('1.0');
   api.use('reactive-var');
-  api.export('Live');
-  api.addFiles('remcoder:live-timer.js');
+  api.export('Chronos');
+  api.addFiles('remcoder:chronos.js');
 });
   
 Package.onTest(function(api) {
