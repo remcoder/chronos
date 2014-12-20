@@ -1,6 +1,6 @@
 # Chronos
 
- * Chronos.Timer - A simple reactive timer
+ * Chronos.Timer - a simple reactive timer
  * Chronos.liveUpdate - make helpers live updating triggered by a timer
  * Chronos.liveMoment - wrapper for moment.js to create live updating timestamps etc
  
@@ -20,6 +20,7 @@ Example:
 
 	// prints the current time every 2 seconds
 	var timer = new Chronos.Timer(2000);
+	
 	Tracker.autorun(function() {
 		console.log(timer.time.get());
 	});
@@ -52,6 +53,7 @@ Example:
 
 	// this will create counter and logs it every second
 	var count = 0;
+	
 	Tracker.autorun(function() {
 		Chronos.liveUpdate();
 		console.log(count);
@@ -70,6 +72,7 @@ Example:
 
 	// prints how long ago the timestamp was made, every second
 	var timestamp = new Date();
+	
 	Tracker.autorun(function() {
 		console.log(Chronos.liveMoment(timestamp).fromNow());
 	});
