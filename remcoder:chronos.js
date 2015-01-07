@@ -44,11 +44,11 @@ Chronos = {
 
   // a simple reactive timer
   // usage: var timer = new Timer();
-  // get current time: timer.getTime();
+  // get current time: timer.time.get();
   Timer : Timer,
 
   // handy util func for making reactive contexts live updating in time
-  // usage: simply call Chrono.liveUpdate() in your helper to make it execute 
+  // usage: simply call Chronos.liveUpdate() in your helper to make it execute 
   // every interval
   liveUpdate : liveUpdate,
   
