@@ -1,6 +1,6 @@
 # Chronos
 
-_v0.2.0 update: Instantiating a Chronos.Timer will __not start the timer immediately__ anymore. You will have to call timer.start() to do that._
+_v0.2.0 update: Instantiating a Chronos.Timer will not start the timer immediately anymore. You will have to call timer.start() to do that._
 
 ### API overview
 
@@ -32,7 +32,7 @@ Example:
 	timer.start();
 
 ### Chronos.Timer.start
-Starts the timer. _Note: as of v0.2.0 the timer doesn't start immediately anymore. You will need to call timer.start() yourself after instantiating a Chronos.Timer_
+Starts the timer. (Note: as of v0.2.0 the timer doesn't start immediately anymore. You will need to call timer.start() yourself after instantiating a Chronos.Timer.)
 
 Usage:
 
