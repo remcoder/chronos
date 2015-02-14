@@ -29,7 +29,7 @@ function liveUpdate(interval) {
   if (!_timers[ctx])
     _timers[ctx] = new Timer(interval);
 
-  _timers[ctx].time.get(); // attach to reactive context and return current time
+  _timers[ctx].time.dep.depend(); // make dependent on reactive time current time
 }
 
 // wrapper for moment.js
