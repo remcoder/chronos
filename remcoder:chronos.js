@@ -2,9 +2,7 @@ var _timers = {};
 
 function Timer(interval) {
   this.interval = interval || 1000;
-  this.time = new ReactiveVar(0);
-
-  this.start();
+  this.time = new ReactiveVar(0);  
 }
 
 Timer.prototype.start = function() {
@@ -30,6 +28,7 @@ function liveUpdate(interval) {
     _timers[ctx] = new Timer(interval);
 
   _timers[ctx].time.dep.depend(); // make dependent on reactive time current time
+  _timers[ctx].start();
 }
 
 // wrapper for moment.js

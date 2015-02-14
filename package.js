@@ -1,7 +1,7 @@
 Package.describe({
   name: 'remcoder:chronos',
   summary: 'A reactive timer and wrapper for momentjs to write time-dependent updates in a Meteoric way. ',
-  version: '0.1.3',
+  version: '0.2.0',
   git: 'https://github.com/remcoder/chronos'
 });
 
@@ -13,8 +13,9 @@ Package.onUse(function(api) {
 });
   
 Package.onTest(function(api) {
-  // console.warn('no tests implemented yet');
-  // api.use('tinytest');
-  // api.use('remcoder:live-timer');
-  // api.addFiles('remcoder:live-timer-tests.js');
+  api.use('tinytest');
+  api.use('reactive-var');
+  api.export('Chronos');
+  api.addFiles('remcoder:chronos.js');
+  api.addFiles('unittests.js');
 });

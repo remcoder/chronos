@@ -1,8 +1,12 @@
 # Chronos
 
- * Chronos.Timer - a simple reactive timer
- * Chronos.liveUpdate - make helpers live updating triggered by a timer
- * Chronos.liveMoment - wrapper for moment.js to create live updating timestamps etc
+_v0.2.0 update: Instantiating a Chronos.Timer will __not start the timer immediately__ anymore. You will have to call timer.start() to do that._
+
+### API overview
+
+ * __Chronos.Timer__ - a simple reactive timer
+ * __Chronos.liveUpdate__ - make helpers live updating triggered by a timer
+ * __Chronos.liveMoment__ - wrapper for moment.js to create live updating timestamps etc
  
 ## Chronos.Timer
 usage:
@@ -24,9 +28,11 @@ Example:
 	Tracker.autorun(function() {
 		console.log(timer.time.get());
 	});
+	
+	timer.start();
 
 ### Chronos.Timer.start
-Start the timer.
+Starts the timer. _Note: as of v0.2.0 the timer doesn't start immediately anymore. You will need to call timer.start() yourself after instantiating a Chronos.Timer_
 
 Usage:
 
@@ -59,6 +65,8 @@ Example:
 		console.log(count);
 		count++;
 	});
+	
+_Note: this uses a Chronos.Timer under the hood. This timer is started automatically when you call .liveUpdate_
 
 ## Chronos.liveMoment
 If the global variable `moment` exists in your app, this function will wrap it to make it update reactively based on a timer.
@@ -77,3 +85,4 @@ Example:
 		console.log(Chronos.liveMoment(timestamp).fromNow());
 	});
 	
+_Note: this uses a Chronos.Timer under the hood. This timer is started automatically when you call .liveMoment_
