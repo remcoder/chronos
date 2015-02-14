@@ -34,9 +34,11 @@ function liveUpdate(interval) {
 
 // wrapper for moment.js
 function liveMoment(/* arguments */) {
+  // only reactively re-run liveMoment when moment is available
+  if (!moment) return;
+  
   liveUpdate();
-  if (moment)
-    return moment.apply(null, arguments);
+  return moment.apply(null, arguments);
 }
 
 // export global
