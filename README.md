@@ -69,7 +69,7 @@ Example:
 _Note: this uses a Chronos.Timer under the hood. This timer is started automatically when you call .liveUpdate_
 
 ## Chronos.liveMoment
-If the global variable `moment` exists in your app, this function will wrap it to make it update reactively based on a timer.
+`Chronos.liveMoment()` is a reactive replacement for the global function `moment()` as provided by moment.js. You'll need to include moment.js yourself (and the reason is that there are [several different versions of momentjs on Atmosphere](https://atmospherejs.com/?q=moment)).
 
 Usage:
 
