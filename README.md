@@ -88,7 +88,11 @@ Usage:
 	// call with the same params as you would moment()
 	Chronos.liveMoment(/* arguments */); 
  
-Example template helper:
+Example template + helper:
+
+	<template name="foo">
+    		<div>time spent: {{timeSpent}}</div>
+	</template>
 
 	var start = new Date();
 
@@ -99,10 +103,11 @@ Example template helper:
 	});
 
 Example with autorun:
-	// prints how long ago the timestamp was made, every second
+
 	var timestamp = new Date();
 	
 	Tracker.autorun(function() {
+		// prints how long ago the timestamp was made, every second
 		console.log(Chronos.liveMoment(timestamp).fromNow());
 	});
 	
