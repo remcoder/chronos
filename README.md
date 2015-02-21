@@ -54,8 +54,20 @@ Usage:
 	// make context live updating. defaults to an interval of 1000m.
 	Chronos.liveUpdate(interval);
 
+Example template + helper:
+	
+	<template name="foo">
+		<div>random number: {{randomNumber}}</div>
+	</template>
+	
+	Template.foo.helpers({
+    		randomNumber : function() {
+    			Chronos.liveUpdate();
+        		return Math.round( Math.random() * 10 );
+    		}
+	});
 
-Example:
+Example with autorun:
 
 	// this will create counter and logs it every second
 	var count = 0;
@@ -76,8 +88,17 @@ Usage:
 	// call with the same params as you would moment()
 	Chronos.liveMoment(/* arguments */); 
  
-Example:
+Example template helper:
 
+	var start = new Date();
+
+	Template.foo.helpers({
+    		timeSpent : function() {
+        		return Chronos.liveMoment(start).fromNow();
+    		}
+	});
+
+Example with autorun:
 	// prints how long ago the timestamp was made, every second
 	var timestamp = new Date();
 	
