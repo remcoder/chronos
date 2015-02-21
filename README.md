@@ -28,6 +28,8 @@ Example template + helper:
 	var timer = new Chronos.Timer(100);
 
 	Template.timer.helpers({
+		
+		// counts from 0 to 10 in 10 seconds
   		time: function () {
     			return ((timer.time.get() // get the current time
     				/ 1000) 	  // convert ms to seconds
@@ -36,7 +38,7 @@ Example template + helper:
  		}	
  	});
 
-See this [live example](http://meteorpad.com/pad/3KRq7khsXWYmDkDK4/Chronos.Timer)
+[See it in action](http://meteorpad.com/pad/3KRq7khsXWYmDkDK4/Chronos.Timer)
 
 Example with autorun: 	
 
@@ -79,6 +81,8 @@ Example template + helper:
 	</template>
 	
 	Template.foo.helpers({
+	
+		// returns a random number between 0 and 10, every second
     		randomNumber : function() {
     			Chronos.liveUpdate();
         		return Math.round( Math.random() * 10 );
