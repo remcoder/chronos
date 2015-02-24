@@ -14,13 +14,33 @@ usage:
 	// create new timer. defaults to an interval of 1000ms
 	var timer = new Chronos.Timer(interval);
 	
-The timer exposes the `time` property, which is a `ReactiveVar`.
-Getting the time value is reactive so its context will re-run on every
-update of the timer.
+The timer exposes the `time` property, which is a [ReactiveVar](http://docs.meteor.com/#/full/reactivevar) and it holds the current time.
+Getting the time value is reactive so it will trigger re-runs whenever the timer produces an update.
 
 	timer.time.get();
 
-Example: 	
+Example template + helper:
+	
+	<template name="timer">
+  		<div class="timer">{{time}}</div>
+	</template>
+	
+	var timer = new Chronos.Timer(100);
+
+	Template.timer.helpers({
+		
+		// counts from 0 to 10 in 10 seconds
+  		time: function () {
+    			return ((timer.time.get() // get the current time
+    				/ 1000) 	  // convert ms to seconds
+    				% 10)		  // reset every 10 seconds
+    				.toFixed(0);	  // drop any decimals
+ 		}	
+ 	});
+
+[See it in action](http://meteorpad.com/pad/3KRq7khsXWYmDkDK4/Chronos.Timer)
+
+Example with autorun: 	
 
 	// prints the current time every 2 seconds
 	var timer = new Chronos.Timer(2000);
@@ -54,8 +74,22 @@ Usage:
 	// make context live updating. defaults to an interval of 1000m.
 	Chronos.liveUpdate(interval);
 
+Example template + helper:
+	
+	<template name="foo">
+		<div>random number: {{randomNumber}}</div>
+	</template>
+	
+	Template.foo.helpers({
+	
+		// returns a random number between 0 and 10, every second
+    		randomNumber : function() {
+    			Chronos.liveUpdate();
+        		return Math.round( Math.random() * 10 );
+    		}
+	});
 
-Example:
+Example with autorun:
 
 	// this will create counter and logs it every second
 	var count = 0;
@@ -66,23 +100,37 @@ Example:
 		count++;
 	});
 	
-_Note: this uses a Chronos.Timer under the hood. This timer is started automatically when you call .liveUpdate_
+_Note: this uses a `Chronos.Timer` under the hood. This timer is started automatically when you call `.liveUpdate`_
 
 ## Chronos.liveMoment
-If the global variable `moment` exists in your app, this function will wrap it to make it update reactively based on a timer.
+`Chronos.liveMoment()` is a reactive replacement for the global function `moment()` as provided by moment.js. You'll need to include moment.js yourself (and the reason is that there are [several different versions of momentjs on Atmosphere](https://atmospherejs.com/?q=moment)).
 
 Usage:
 
 	// call with the same params as you would moment()
 	Chronos.liveMoment(/* arguments */); 
  
-Example:
+Example template + helper:
 
-	// prints how long ago the timestamp was made, every second
+	<template name="foo">
+    		<div>time spent: {{timeSpent}}</div>
+	</template>
+
+	var start = new Date();
+
+	Template.foo.helpers({
+    		timeSpent : function() {
+        		return Chronos.liveMoment(start).fromNow();
+    		}
+	});
+
+Example with autorun:
+
 	var timestamp = new Date();
 	
 	Tracker.autorun(function() {
+		// prints how long ago the timestamp was made, every second
 		console.log(Chronos.liveMoment(timestamp).fromNow());
 	});
 	
-_Note: this uses a Chronos.Timer under the hood. This timer is started automatically when you call .liveMoment_
+_Note: this uses a `Chronos.Timer` under the hood. This timer is started automatically when you call `.liveMoment`_
