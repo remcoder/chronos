@@ -27,8 +27,8 @@ function liveUpdate(interval) {
   if (!_timers[ctx])
     _timers[ctx] = new Timer(interval);
 
-  _timers[ctx].time.dep.depend(); // make dependent on reactive time current time
   _timers[ctx].start();
+  _timers[ctx].time.dep.depend(); // make dependent on reactive time current time
 }
 
 // wrapper for moment.js
