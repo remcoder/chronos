@@ -24,11 +24,13 @@ function liveUpdate(interval) {
   if (!ctx)
     throw new Error('liveUpdate should be called from inside a reactive context.');
 
-  if (!_timers[ctx])
+  if (!_timers[ctx]) {
     _timers[ctx] = new Timer(interval);
+    _timers[ctx].start();
+  }
+  _timers[ctx].time.dep.depend(Tracker.currentComputation); // make dependent on reactive time current time
 
-  _timers[ctx].start();
-  _timers[ctx].time.dep.depend(); // make dependent on reactive time current time
+  return _timers[ctx];
 }
 
 // wrapper for moment.js
