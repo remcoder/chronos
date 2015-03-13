@@ -2,6 +2,10 @@
 
 _v0.2.0 update: Instantiating a Chronos.Timer will not start the timer immediately anymore. You will have to call timer.start() to do that._
 
+## Installation
+
+	$ meteor add remcoder:chronos
+
 ### API overview
 
  * __Chronos.Timer__ - a simple reactive timer
