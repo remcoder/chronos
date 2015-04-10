@@ -16,8 +16,8 @@ Tinytest.addAsync('getting the time should trigger reactive updates', function(t
     timer.time.get();
     count++;
     if (count > 1) {
+      timer.stop();
       next();
-      c.stop();
     }
   }));
 
@@ -33,8 +33,8 @@ Tinytest.addAsync('calling the underlying Dependency should trigger reactive upd
     timer.time.dep.depend();
     count++;
     if (count > 1) {
+      timer.stop();
       next();
-      c.stop();
     }
   }));
 
@@ -46,12 +46,12 @@ Tinytest.addAsync('liveUpdate should trigger reactive updates', function(test, n
   
   var count = 0;
   Tracker.autorun(Meteor.bindEnvironment(function(c) {
-    Chronos.liveUpdate();
+    var timer = Chronos.liveUpdate(100);
 
     count++;
     if (count > 1) {
+      timer.destroy();
       next();
-      c.stop();
     }
   }));
 
@@ -67,14 +67,42 @@ Tinytest.addAsync('An already started Timer should not be able to start', functi
     if (count == 0) {
       timer.start();
     }
-    else if (count > 1) {
+
+    if (count > 1) {
       test.throws(function() { timer.start(); });
-      c.stop();
+      timer.stop();
     }
 
     // get the time to trigger reactivity
     timer.time.get();
     next();
+  }));
+
+});
+
+Tinytest.addAsync('a liveUpdate timer should be destroyable', function(test, next) {
+  var count = 0;
+  Chronos.timers = {};
+
+  Tracker.autorun(Meteor.bindEnvironment(function(c) {
+
+    var timer = Chronos.liveUpdate(100);
+
+
+    if (count == 1) {
+      timer.destroy();
+
+      test.equal( Object.keys(Chronos.timers).length, 0, 'there should be no more timers now' );
+
+      // give it some time
+      Meteor.setTimeout(next, 200);
+    }
+
+    if (count == 2) 
+      test.fail();
+
+    count++;
+
   }));
 
 });

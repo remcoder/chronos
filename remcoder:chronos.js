@@ -10,28 +10,51 @@ Timer.prototype.start = function() {
   this.time.set(new Date());
 
   this._timer = Meteor.setInterval(function() {
+    //console.log('tick', this._timer);
     this.time.set(new Date());
   }.bind(this), this.interval);
 };
 
 Timer.prototype.stop = function() {
-  Meteor.clearInterval(this._timer);
+  //console.log('stopping timer');
+  clearInterval(this._timer);
   this._timer = null;
 };
 
 function liveUpdate(interval) {
   // get current reactive context
-  var ctx = Tracker.currentComputation && Tracker.currentComputation._id;
-  if (!ctx)
+  var comp = Tracker.currentComputation;
+  if (!comp)
     throw new Error('liveUpdate should be called from inside a reactive context.');
 
-  if (!_timers[ctx]) {
-    _timers[ctx] = new Timer(interval);
-    _timers[ctx].start();
-  }
-  _timers[ctx].time.dep.depend(Tracker.currentComputation); // make dependent on reactive time current time
+  // only create one timer per reactive context to prevent stacking of timers
+  var cid =  comp && comp._id;
+  if (!_timers[cid]) {
+    var timer = new Timer(interval);
+    _timers[cid] = timer;
 
-  return _timers[ctx];
+    // add destroy method that stops the timer and removes itself from the list
+    timer.destroy = function() {
+      timer.stop();
+      delete _timers[cid];
+    };
+
+    timer.start();
+  }
+
+  // make sure to stop and delete the attached timer when the computation is stopped
+  comp.onInvalidate(function() {
+    //console.log('onInvalidated',comp);
+    if (comp.stopped) {
+      //console.log('computation stopped');
+      _timers[cid].destroy();
+    }
+  });
+
+  _timers[cid].time.dep.depend(comp); // make dependent on time
+
+  //console.log(_timers);
+  return _timers[cid];
 }
 
 // wrapper for moment.js
@@ -58,5 +81,8 @@ Chronos = {
   
   // wrapper for moment.js
   // example usage: Chronos.liveMoment(someTimestamp).fromNow();
-  liveMoment: liveMoment
+  liveMoment: liveMoment,
+
+  // for debugging and testing
+  _timers : _timers
 };
