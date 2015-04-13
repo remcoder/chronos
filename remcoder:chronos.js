@@ -9,10 +9,12 @@ Timer.prototype.start = function() {
   if (this._timer) throw new Error('Trying to start Chronos.Timer but it is already running.');
   this.time.set(new Date());
 
-  this._timer = Meteor.setInterval(function() {
+
+  this._timer = setInterval(Meteor.bindEnvironment(function() {
     //console.log('tick', this._timer);
     this.time.set(new Date());
-  }.bind(this), this.interval);
+
+  }.bind(this)), this.interval);
 };
 
 Timer.prototype.stop = function() {
