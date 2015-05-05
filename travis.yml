@@ -1,0 +1,13 @@
+# using Spacejam for running tests
+# see: http://practicalmeteor.com/testing-meteor-packages-command-line-travis-ci/
+
+language: node_js
+
+node_js: "0.10.29"
+
+install:
+  - "curl https://install.meteor.com | /bin/sh"
+  - "npm install -g spacejam"
+
+script:
+  - "spacejam test-packages ./"

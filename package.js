@@ -16,6 +16,7 @@ Package.onTest(function(api) {
   api.use('tinytest');
   api.use('reactive-var');
   api.export('Chronos');
+  api.addFiles('bind-polyfill.js');
   api.addFiles('remcoder:chronos.js');
   api.addFiles('unittests.js');
 });
