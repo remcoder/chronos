@@ -1,4 +1,4 @@
-# Chronos
+# Chronos [![Build Status](https://travis-ci.org/remcoder/chronos.svg?branch=master)](https://travis-ci.org/remcoder/chronos)
 
 _v0.2.0 update: Instantiating a Chronos.Timer will not start the timer immediately anymore. You will have to call timer.start() to do that._
 
@@ -8,9 +8,81 @@ _v0.2.0 update: Instantiating a Chronos.Timer will not start the timer immediate
 
 ### API overview
 
- * __Chronos.Timer__ - a simple reactive timer
- * __Chronos.liveUpdate__ - make helpers live updating triggered by a timer
  * __Chronos.liveMoment__ - wrapper for moment.js to create live updating timestamps etc
+ * __Chronos.liveUpdate__ - make template helpers etc update live 
+ * __Chronos.Timer__ - a simple reactive timer for driving live updates
+
+## Chronos.liveMoment
+`Chronos.liveMoment()` is a reactive replacement for the global function `moment()` as provided by moment.js. This reactive version will result in live updates, i.e. live timestamps and such.
+ You'll need to include moment.js yourself (and the reason is that there are [several different versions of momentjs on Atmosphere](https://atmospherejs.com/?q=moment)).
+
+Usage:
+
+	// call with the same params as you would moment()
+	Chronos.liveMoment(/* arguments */); 
+ 
+Example template + helper:
+
+	<template name="foo">
+    		<div>time spent: {{timeSpent}}</div>
+	</template>
+
+	var start = new Date();
+
+	Template.foo.helpers({
+    		timeSpent : function() {
+        		return Chronos.liveMoment(start).fromNow();
+    		}
+	});
+
+Example with autorun:
+
+	var timestamp = new Date();
+	
+	Tracker.autorun(function() {
+		// prints how long ago the timestamp was made, every second
+		console.log(Chronos.liveMoment(timestamp).fromNow());
+	});
+	
+_Note: this uses a `Chronos.Timer` under the hood. This timer is started automatically when you call `.liveMoment`_
+
+## Chronos.liveUpdate
+When called from inside a Blaze helper or other reactive context, it will setup a timer once and make the context dependent on the timer. What this means is that for example the helper will we re-run every time the timer updates.
+
+Usage:
+
+	// make context live updating. defaults to an interval of 1000m.
+	Chronos.liveUpdate(interval);
+
+Example template + helper:
+	
+	<template name="foo">
+		<div>random number: {{randomNumber}}</div>
+	</template>
+	
+	Template.foo.helpers({
+	
+		// returns a random number between 0 and 10, every second
+    		randomNumber : function() {
+    			Chronos.liveUpdate();
+        		return Math.round( Math.random() * 10 );
+    		}
+	});
+
+Example with autorun:
+
+	// this will create counter and logs it every second
+	var count = 0;
+	
+	Tracker.autorun(function() {
+		Chronos.liveUpdate();
+		console.log(count);
+		count++;
+	});
+	
+_Note: this uses a `Chronos.Timer` under the hood. This timer is started automatically when you call `.liveUpdate`_
+
+
  
 ## Chronos.Timer
 usage:
@@ -64,77 +136,9 @@ Usage:
 	
 
 ### Chronos.Timer.stop
-Stop the timer.
+Stops the timer.
 
 Usage:
 
 	timer.stop();
 	
-## Chronos.liveUpdate
-When called from inside a Blaze helper or other reactive context, it will setup a timer once and make the context dependent on the timer. What this means is that for example the helper will we re-run every time the timer updates.
-
-Usage:
-
-	// make context live updating. defaults to an interval of 1000m.
-	Chronos.liveUpdate(interval);
-
-Example template + helper:
-	
-	<template name="foo">
-		<div>random number: {{randomNumber}}</div>
-	</template>
-	
-	Template.foo.helpers({
-	
-		// returns a random number between 0 and 10, every second
-    		randomNumber : function() {
-    			Chronos.liveUpdate();
-        		return Math.round( Math.random() * 10 );
-    		}
-	});
-
-Example with autorun:
-
-	// this will create counter and logs it every second
-	var count = 0;
-	
-	Tracker.autorun(function() {
-		Chronos.liveUpdate();
-		console.log(count);
-		count++;
-	});
-	
-_Note: this uses a `Chronos.Timer` under the hood. This timer is started automatically when you call `.liveUpdate`_
-
-## Chronos.liveMoment
-`Chronos.liveMoment()` is a reactive replacement for the global function `moment()` as provided by moment.js. You'll need to include moment.js yourself (and the reason is that there are [several different versions of momentjs on Atmosphere](https://atmospherejs.com/?q=moment)).
-
-Usage:
-
-	// call with the same params as you would moment()
-	Chronos.liveMoment(/* arguments */); 
- 
-Example template + helper:
-
-	<template name="foo">
-    		<div>time spent: {{timeSpent}}</div>
-	</template>
-
-	var start = new Date();
-
-	Template.foo.helpers({
-    		timeSpent : function() {
-        		return Chronos.liveMoment(start).fromNow();
-    		}
-	});
-
-Example with autorun:
-
-	var timestamp = new Date();
-	
-	Tracker.autorun(function() {
-		// prints how long ago the timestamp was made, every second
-		console.log(Chronos.liveMoment(timestamp).fromNow());
-	});
-	
-_Note: this uses a `Chronos.Timer` under the hood. This timer is started automatically when you call `.liveMoment`_
