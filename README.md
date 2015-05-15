@@ -16,6 +16,18 @@
 A reactive replacement for `new Date`. It returns a `Date` object and triggers reactive updates.
 Optionally pass an `interval` in milliseconds. The default is 1000ms (1 second).
 
+Usage:
+
+	<template name="foo">
+	   current time: {{currentTime}}
+	</template>
+
+	Template.foo.helpers({
+	   currentTime : function() {
+	       return Chronos.currentTime(); // updates every second
+	   }
+	});
+	
 ## `Chronos.liveMoment(args...)`
 A reactive replacement for the global function `moment()` as provided by [moment.js](http://momentjs.com/). This reactive version will trigger live updates, for live timestamps and such.
  You'll need to include moment.js yourself (and the reason is that there are [several different versions of momentjs on Atmosphere](https://atmospherejs.com/?q=moment)).
