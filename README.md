@@ -9,8 +9,8 @@
 
  * __Chronos.currentTime__ (NEW) - a reactive replacement for `new Date()`
  * __Chronos.liveMoment__ - a reactive replacement for `moment()` 
- * __Chronos.liveUpdate__ - make template helpers etc update live 
- * __Chronos.Timer__ - a simple reactive timer for driving live updates
+ * __Chronos.liveUpdate__ - trigger reactive updates with a single call 
+ * __Chronos.Timer__ - a simple reactive timer
 
 ## `Chronos.currentTime(interval)`
 A reactive replacement for `new Date`. It returns a `Date` object and triggers reactive updates.
