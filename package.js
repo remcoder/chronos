@@ -1,7 +1,7 @@
 Package.describe({
   name: 'remcoder:chronos',
-  summary: 'A reactive timer and wrapper for momentjs to write time-dependent updates in a Meteoric way. ',
-  version: '0.2.5',
+  summary: 'Reactive time utilities. Includes reactive replacements for new Date() and moment()',
+  version: '0.3.0',
   git: 'https://github.com/remcoder/chronos'
 });
 
