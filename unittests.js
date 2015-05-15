@@ -8,6 +8,12 @@ Tinytest.add('timer shouldn\'t start immediately', function(test) {
   test.isUndefined(timer._timer, 'timer._timer should not be set ');
 });
 
+Tinytest.add('timer should have handle when started', function(test) {
+  var timer = new Chronos.Timer();
+  timer.start();
+  test.isTrue( !!timer._timer );
+});
+
 Tinytest.addAsync('getting the time should trigger reactive updates', function(test, next) {
   var timer = new Chronos.Timer();
   
@@ -86,19 +92,96 @@ Tinytest.addAsync('a liveUpdate timer should be destroyable', function(test, nex
 
   Tracker.autorun(Meteor.bindEnvironment(function(c) {
 
-    var timer = Chronos.liveUpdate(100);
-
+    var timer = Chronos.liveUpdate(10);
 
     if (count == 1) {
       timer.destroy();
 
       test.equal( Object.keys(Chronos.timers).length, 0, 'there should be no more timers now' );
 
-      // give it some time
-      Meteor.setTimeout(next, 200);
     }
 
     if (count == 2) 
+      test.fail();
+
+    count++;
+
+  }));
+
+  Meteor.setTimeout(next, 100);
+});
+
+Tinytest.add('currentTime should return same time as new Date', function(test) {
+  var normalTime, reactiveTime;
+
+  Tracker.autorun(function(c) {
+
+    normalTime = new Date();
+    reactiveTime = Chronos.currentTime();
+
+    c.stop();
+  });
+
+  test.isTrue( (reactiveTime - normalTime)  <= 1), 'there shouldn\'t be more than a milisecond difference';
+});
+
+Tinytest.add('currentTime should return a Date object', function(test) {
+  var reactiveTime = Chronos.currentTime();
+  test.instanceOf(reactiveTime, Date);
+});
+
+Tinytest.addAsync('currentTime should trigger reactive updates', function(test, next) {
+
+  var count = 0;
+  Tracker.autorun(Meteor.bindEnvironment(function(c) {
+    Chronos.currentTime(10);
+
+    count++;
+    if (count > 1) {
+      c.stop();
+      next();
+    }
+  }));
+
+});
+
+Tinytest.addAsync('liveUpdate timer should be destroyed when computation is stopped', function(test, next) {
+  var count = 0;
+  Chronos.timers = {};
+
+  Tracker.autorun(Meteor.bindEnvironment(function(c) {
+
+    Chronos.liveUpdate(10);
+
+    if (count == 1)
+      test.fail();
+
+
+    if (count == 0)
+      c.stop();
+
+    count++;
+
+  }));
+
+  Meteor.setTimeout(next, 100);
+});
+
+
+Tinytest.addAsync('currentTime timer should be destroyed when computation is stopped', function(test, next) {
+  var count = 0;
+  Chronos.timers = {};
+
+  Tracker.autorun(Meteor.bindEnvironment(function(c) {
+
+    Chronos.currentTime(10);
+
+    if (count == 1) {
+      c.stop();
+      next();
+    }
+
+    if (count == 2)
       test.fail();
 
     count++;

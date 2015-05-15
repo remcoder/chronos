@@ -68,6 +68,11 @@ function liveMoment(/* arguments */) {
   return moment.apply(null, arguments);
 }
 
+function currentTime(interval) {
+  liveUpdate(interval);
+  return new Date();
+}
+
 // export global
 Chronos = {
 
@@ -84,6 +89,9 @@ Chronos = {
   // wrapper for moment.js
   // example usage: Chronos.liveMoment(someTimestamp).fromNow();
   liveMoment: liveMoment,
+
+  // get the current time, reactively
+  currentTime: currentTime,
 
   // for debugging and testing
   _timers : _timers
