@@ -27,7 +27,7 @@ function liveUpdate(interval) {
   // get current reactive context
   var comp = Tracker.currentComputation;
   if (!comp)
-    throw new Error('liveUpdate should be called from inside a reactive context.');
+    return; // no nothing when used outsite a reactive context
 
   // only create one timer per reactive context to prevent stacking of timers
   var cid =  comp && comp._id;
