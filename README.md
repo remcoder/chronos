@@ -1,6 +1,5 @@
 # Chronos [![Build Status](https://travis-ci.org/remcoder/chronos.svg?branch=master)](https://travis-ci.org/remcoder/chronos)
 
-_v0.2.0 update: Instantiating a Chronos.Timer will not start the timer immediately anymore. You will have to call timer.start() to do that._
 
 ## Installation
 
@@ -8,17 +7,22 @@ _v0.2.0 update: Instantiating a Chronos.Timer will not start the timer immediate
 
 ### API overview
 
- * __Chronos.liveMoment__ - wrapper for moment.js to create live updating timestamps etc
+ * __Chronos.currentTime__ (NEW) - a reactive replacement for `new Date()`
+ * __Chronos.liveMoment__ - a reactive replacement for `moment()` 
  * __Chronos.liveUpdate__ - make template helpers etc update live 
  * __Chronos.Timer__ - a simple reactive timer for driving live updates
 
-## Chronos.liveMoment
-`Chronos.liveMoment()` is a reactive replacement for the global function `moment()` as provided by moment.js. This reactive version will result in live updates, i.e. live timestamps and such.
+## `Chronos.currentTime(interval)`
+A reactive replacement for `new Date`. It returns a `Date` object and triggers reactive updates.
+Optionally pass an `interval` in milliseconds. The default is 1000ms (1 second).
+
+## `Chronos.liveMoment(args...)`
+A reactive replacement for the global function `moment()` as provided by [moment.js](http://momentjs.com/). This reactive version will trigger live updates, for live timestamps and such.
  You'll need to include moment.js yourself (and the reason is that there are [several different versions of momentjs on Atmosphere](https://atmospherejs.com/?q=moment)).
 
 Usage:
 
-	// call with the same params as you would moment()
+	// call with the same params as moment()
 	Chronos.liveMoment(/* arguments */); 
  
 Example template + helper:
@@ -46,7 +50,7 @@ Example with autorun:
 	
 _Note: this uses a `Chronos.Timer` under the hood. This timer is started automatically when you call `.liveMoment`_
 
-## Chronos.liveUpdate
+## `Chronos.liveUpdate(interval)`
 When called from inside a Blaze helper or other reactive context, it will setup a timer once and make the context dependent on the timer. What this means is that for example the helper will we re-run every time the timer updates.
 
 Usage:
@@ -54,6 +58,8 @@ Usage:
 	// make context live updating. defaults to an interval of 1000m.
 	Chronos.liveUpdate(interval);
 
+_It returns the `Chronos.Timer` that drives the updates._
+	
 Example template + helper:
 	
 	<template name="foo">
@@ -84,7 +90,7 @@ _Note: this uses a `Chronos.Timer` under the hood. This timer is started automat
 
 
  
-## Chronos.Timer
+## `Chronos.Timer()`
 usage:
 
 	// create new timer. defaults to an interval of 1000ms
@@ -127,18 +133,27 @@ Example with autorun:
 	
 	timer.start();
 
-### Chronos.Timer.start
-Starts the timer. (Note: as of v0.2.0 the timer doesn't start immediately anymore. You will need to call timer.start() yourself after instantiating a Chronos.Timer.)
+### `Chronos.Timer.start()`
+Starts the timer (by kicking off a setInterval loop). 
 
 Usage:
 
 	timer.start();
 	
 
-### Chronos.Timer.stop
+### `Chronos.Timer.stop()`
 Stops the timer.
 
 Usage:
 
 	timer.stop();
 	
+## Changelog
+
+ - 0.3.0
+	 -	added `currentTime()` a reactive replacement for `new Date`
+   	 - 	no longer throws an exception when used outside a reactive context.
+ - 0.2.x
+ 	- bugfixes
+ - 0.2.0
+ 	- Instantiating a Chronos.Timer will not start the timer immediately anymore.
