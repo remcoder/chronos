@@ -162,9 +162,12 @@ Usage:
 	
 ## Changelog
 
+ - 0.3.1
+ 	 - fixed a bug where `destroy()` would sometimes be called twice, resulting in a TypeError (#7)
+ 	 thx to [MichelFloyd](https://github.com/MichelFloyd)
  - 0.3.0
-	 -	added `currentTime()` a reactive replacement for `new Date`
-   	 - 	no longer throws an exception when used outside a reactive context.
+	 - added `currentTime()` a reactive replacement for `new Date`
+   	 - no longer throws an exception when used outside a reactive context.
  - 0.2.x
  	- bugfixes
  - 0.2.0
