@@ -163,7 +163,7 @@ Usage:
 ## Changelog
 
  - 0.3.1
- 	 - fixed a bug where `destroy()` would sometimes be called twice, resulting in a TypeError (#7)
+ 	 - fixed a bug where `destroy()` would sometimes be called twice, resulting in a TypeError ([#7](https://github.com/remcoder/chronos/issues/7))
  	 thx to [MichelFloyd](https://github.com/MichelFloyd)
  - 0.3.0
 	 - added `currentTime()` a reactive replacement for `new Date`
