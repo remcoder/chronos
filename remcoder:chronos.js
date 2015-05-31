@@ -47,7 +47,7 @@ function liveUpdate(interval) {
   // make sure to stop and delete the attached timer when the computation is stopped
   comp.onInvalidate(function() {
     //console.log('onInvalidated',comp);
-    if (comp.stopped) {
+    if (comp.stopped && _timers[cid]) {
       //console.log('computation stopped');
       _timers[cid].destroy();
     }
