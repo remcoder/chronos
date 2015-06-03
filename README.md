@@ -1,5 +1,6 @@
 # Chronos [![Build Status](https://travis-ci.org/remcoder/chronos.svg?branch=master)](https://travis-ci.org/remcoder/chronos)
 
+For a short introduction, see my [lightning talk at the Meteor Meetup](http://vimeo.com/129601361) in Amsterdam about Chronos.
 
 ## Installation
 
@@ -7,7 +8,7 @@
 
 ### API overview
 
- * __Chronos.currentTime__ (NEW) - a reactive replacement for `new Date()`
+ * __Chronos.currentTime__ - a reactive replacement for `new Date()`
  * __Chronos.liveMoment__ - a reactive replacement for `moment()` 
  * __Chronos.liveUpdate__ - trigger reactive updates with a single call 
  * __Chronos.Timer__ - a simple reactive timer
