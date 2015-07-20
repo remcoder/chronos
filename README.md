@@ -161,6 +161,10 @@ Usage:
 
 	timer.stop();
 	
+## License
+
+[MIT License](LICENSE.txt)
+
 ## Changelog
 
  - 0.3.1
