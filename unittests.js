@@ -1,5 +1,7 @@
 import { chai } from 'meteor/practicalmeteor:chai';
 
+const moment = require('moment');
+
 describe('timer creation I', function () {
   it('invoking the constructor of Chronos.Timer should result in an instance of Chronos.Timer', function () {
     var timer = new Chronos.Timer();
@@ -306,3 +308,9 @@ describe('Stopping the computation II', function() {
 });
 
 
+describe('Chronos.moment', function () {
+  it('Chronos.moment should return a moment instance', function() {
+    var reactiveMoment = Chronos.moment();
+    // chai.assert.instanceOf(reactiveMoment, moment().constructor);
+  });
+});

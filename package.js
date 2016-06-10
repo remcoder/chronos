@@ -18,8 +18,10 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
   api.use('ecmascript');
   api.use('tracker');
+  Npm.depends({
+    moment: '2.13.0'
+  });
   api.use('remcoder:chronos');
   api.use('practicalmeteor:chai');
-  api.use('tinytest');
   api.mainModule('unittests.js');
 });
