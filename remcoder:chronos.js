@@ -1,4 +1,3 @@
-var _timers = {};
 let moment;
 
 // if moment is not installed, fine. We don't require it as a hard dependency
@@ -7,6 +6,8 @@ try {
 }
 catch(e) {
 }
+
+const _timers = {};
 
 function Timer(interval) {
   this.interval = interval || 1000;
@@ -31,16 +32,16 @@ Timer.prototype.stop = function() {
   this._timer = null;
 };
 
-function liveUpdate(interval) {
+function _update(interval) {
   // get current reactive context
-  var comp = Tracker.currentComputation;
+  const comp = Tracker.currentComputation;
   if (!comp)
     return; // no nothing when used outside a reactive context
 
   // only create one timer per reactive context to prevent stacking of timers
-  var cid =  comp && comp._id;
+  const cid =  comp && comp._id;
   if (!_timers[cid]) {
-    var timer = new Timer(interval);
+    const timer = new Timer(interval);
     _timers[cid] = timer;
 
     // add destroy method that stops the timer and removes itself from the list
@@ -67,18 +68,26 @@ function liveUpdate(interval) {
   return _timers[cid];
 }
 
-// wrapper for moment.js
-function liveMoment(/* arguments */) {
-  // only reactively re-run liveMoment when moment is available
-  if (!moment) return;
+// reactive version of moment()
+// please install moment separately
+// example usage: Chronos.moment(someTimestamp).format('ss');
+function _moment(/* arguments */) {
+  if (!moment) throw new Error('moment not found. Please install it first');
   
-  liveUpdate();
+  _update();
   return moment.apply(null, arguments);
 }
 
-function currentTime(interval) {
-  liveUpdate(interval);
+// reactive version of new Date() get the current date/time
+function _date(interval) {
+  _update(interval);
   return new Date();
+}
+
+// reactive version of Date.now(). get the current # of milliseconds since the start of the epoch
+function _now(interval) {
+  _update(interval);
+  return Date.now();
 }
 
 // export global
@@ -87,20 +96,29 @@ Chronos = {
   // a simple reactive timer
   // usage: var timer = new Timer();
   // get current time: timer.time.get();
-  Timer : Timer,
+  Timer,
 
   // handy util func for making reactive contexts live updating in time
-  // usage: simply call Chronos.liveUpdate() in your helper to make it execute 
+  // usage: simply call Chronos.update() in your helper to make it execute
   // every interval
-  liveUpdate : liveUpdate,
-  
-  // wrapper for moment.js
-  // example usage: Chronos.liveMoment(someTimestamp).fromNow();
-  liveMoment: liveMoment,
+  update: _update,
 
-  // get the current time, reactively
-  currentTime: currentTime,
+  // reactive version of new Date() get the current date/time
+  date : _date,
+
+  // reactive version of Date.now(). get the current # of milliseconds since the start of the epoch
+  now : _now,
+
+  // reactive version of moment()
+  // please install moment separately
+  // example usage: Chronos.moment(someTimestamp).format('ss');
+  moment : _moment,
 
   // for debugging and testing
-  _timers : _timers
+  _timers,
+
+  // deprecated. but kept for backwards compatibility
+  liveUpdate : _update,
+  currentTime : _date,
+  liveMoment : _moment
 };
