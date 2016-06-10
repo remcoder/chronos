@@ -1,4 +1,12 @@
 var _timers = {};
+let moment;
+
+// if moment is not installed, fine. We don't require it as a hard dependency
+try {
+   moment = require('moment');
+}
+catch(e) {
+}
 
 function Timer(interval) {
   this.interval = interval || 1000;
