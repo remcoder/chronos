@@ -9,15 +9,16 @@ Package.onUse(function(api) {
   api.versionsFrom('1.3');
   api.use('ecmascript');
   api.use('reactive-var');
+  api.use('tracker');
   api.export('Chronos');
   api.addFiles('remcoder:chronos.js');
 });
   
 Package.onTest(function(api) {
+  api.use('ecmascript');
+  api.use('tracker');
+  api.use('remcoder:chronos');
+  api.use('practicalmeteor:chai');
   api.use('tinytest');
-  api.use('reactive-var');
-  api.export('Chronos');
-  api.addFiles('bind-polyfill.js');
-  api.addFiles('remcoder:chronos.js');
-  api.addFiles('unittests.js');
+  api.mainModule('unittests.js');
 });
