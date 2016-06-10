@@ -18,6 +18,7 @@ Package.onTest(function(api) {
   api.use('ecmascript');
   api.use('tinytest');
   api.use('reactive-var');
+  api.use('tracker');
   api.export('Chronos');
   api.addFiles('bind-polyfill.js');
   api.addFiles('remcoder:chronos.js');
