@@ -133,8 +133,6 @@ Example template + helper:
  		}	
  	});
 
-[See it in action](http://meteorpad.com/pad/3KRq7khsXWYmDkDK4/Chronos.Timer)
-
 Example with autorun: 	
 
 	// prints the current time every 2 seconds
@@ -167,6 +165,10 @@ Usage:
 
 ## Changelog
 
+ - 0.4.0
+  - fixed a bug causing a ReferenceError when `liveMoment` is called and moment is imported as a module
+  ([#10](https://github.com/remcoder/chronos/issues/10))
+  thx to [dylanmcgowan](https://github.com/dylanmcgowan)
  - 0.3.1
  	 - fixed a bug where `destroy()` would sometimes be called twice, resulting in a TypeError ([#7](https://github.com/remcoder/chronos/issues/7))
  	 thx to [MichelFloyd](https://github.com/MichelFloyd)
