@@ -6,18 +6,14 @@ function tryGetMoment() {
 
   // first try atmosphere package
   if ('momentjs:moment' in Package) {
-
     return Package['momentjs:moment'].moment ;
-    console.log('atmosphere moment');
   }
 
   // try npm package
   try {
     return require('moment'); // moment installed as npm package
-    console.log('npm moment');
   }
   catch(e) {
-    console.log('no moment');
     throw new Error('Cannot find moment. To install it run "meteor npm install --save moment"');
   }
 }
