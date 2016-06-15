@@ -11,6 +11,9 @@ Package.onUse(function(api) {
   api.use('tracker');
   api.use('reactive-var');
   api.use('tracker');
+  Npm.depends({
+    moment: '2.13.0'
+  });
   api.export('Chronos');
   api.addFiles('remcoder:chronos.js');
 });
