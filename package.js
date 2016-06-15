@@ -1,6 +1,6 @@
 Package.describe({
   name: 'remcoder:chronos',
-  summary: 'Reactive time utilities. Includes reactive replacements for new Date() and moment()',
+  summary: 'Reactive time utilities. Includes reactive replacements for new Date(), Date.now() and moment()',
   version: '1.0.0',
   git: 'https://github.com/remcoder/chronos'
 });
