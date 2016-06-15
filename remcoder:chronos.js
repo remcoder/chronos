@@ -1,12 +1,28 @@
 var _timers = {};
-let moment;
 
-// if moment is not installed, fine. We don't require it as a hard dependency
-try {
-   moment = require('moment');
+
+function tryGetMoment() {
+  // if moment is not installed, fine. We don't require it as a hard dependency;
+
+  // first try atmosphere package
+  if ('momentjs:moment' in Package) {
+
+    return Package['momentjs:moment'].moment ;
+    console.log('atmosphere moment');
+  }
+
+  // try npm package
+  try {
+    return require('moment'); // moment installed as npm package
+    console.log('npm moment');
+  }
+  catch(e) {
+    console.log('no moment');
+    throw new Error('Cannot find moment. To install it run "meteor npm install --save moment"');
+  }
 }
-catch(e) {
-}
+
+
 
 function Timer(interval) {
   this.interval = interval || 1000;
@@ -69,9 +85,9 @@ function liveUpdate(interval) {
 
 // wrapper for moment.js
 function liveMoment(/* arguments */) {
+  const moment = tryGetMoment(); // will throw if moment is not available
+
   // only reactively re-run liveMoment when moment is available
-  if (!moment) return;
-  
   liveUpdate();
   return moment.apply(null, arguments);
 }
