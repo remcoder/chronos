@@ -11,6 +11,7 @@ Package.onUse(function(api) {
   api.use('tracker');
   api.use('reactive-var');
   api.use('tracker');
+  api.use('zodiase:function-bind@0.0.1');
   Npm.depends({
     moment: '2.13.0'
   });
@@ -27,5 +28,6 @@ Package.onTest(function(api) {
   api.use('remcoder:chronos');
   api.use('practicalmeteor:mocha');
   api.use('practicalmeteor:chai');
+
   api.mainModule('unittests.js');
 });
