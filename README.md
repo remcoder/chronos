@@ -10,12 +10,13 @@ $ meteor add remcoder:chronos
 
 ### API overview
 
- * __Chronos.currentTime__ - a reactive replacement for `new Date()`
- * __Chronos.liveMoment__ - a reactive replacement for `moment()` 
- * __Chronos.liveUpdate__ - trigger reactive updates with a single call 
+ * __Chronos.date__ - a reactive replacement for `new Date()`
+ * __Chronos.now__  - a reactive replacement for `Date.now()`
+ * __Chronos.moment__ - a reactive replacement for `moment()` 
+ * __Chronos.update__ - trigger reactive updates with a single call 
  * __Chronos.Timer__ - a simple reactive timer
 
-## Chronos.currentTime(interval)
+## Chronos.date(interval)
 A reactive replacement for `new Date`. It returns a `Date` object and triggers reactive updates.
 Optionally pass an `interval` in milliseconds. The default is 1000ms (1 second).
 
@@ -30,12 +31,32 @@ Usage:
 ```javascript
 Template.foo.helpers({
    currentTime : function() {
-       return Chronos.currentTime(); // updates every second
+       return Chronos.date(); // updates every second
    }
 });
 ```
-	
-## Chronos.liveMoment(args...)
+
+## Chronos.now(interval)
+A reactive replacement for `Date.now`. It returns the milliseconds since the start of the epoch and triggers reactive updates.
+Optionally pass an `interval` in milliseconds. The default is 1000ms (1 second).
+
+Usage:
+
+```html
+<template name="foo">
+   millis: {{millis}}
+</template>
+```
+
+```javascript
+Template.foo.helpers({
+   millis : function() {
+       return Chronos.now(); // updates every second
+   }
+});
+```
+
+## Chronos.moment(args...)
 A reactive replacement for the global function `moment()` as provided by [moment.js](http://momentjs.com/). This reactive version will trigger live updates, for live timestamps and such.
  You'll need to include moment.js yourself (and the reason is that there are [several different versions of momentjs on Atmosphere](https://atmospherejs.com/?q=moment)).
 
@@ -43,7 +64,7 @@ Usage:
 
 ```javascript
 // call with the same params as moment()
-Chronos.liveMoment(/* arguments */); 
+Chronos.moment(/* arguments */); 
 ```
  
 Example template + helper:
@@ -59,7 +80,7 @@ var start = new Date();
 
 Template.foo.helpers({
 		timeSpent : function() {
-    		return Chronos.liveMoment(start).fromNow();
+    		return Chronos.moment(start).fromNow();
 		}
 });
 ```
@@ -71,20 +92,20 @@ Example with autorun:
 	
 	Tracker.autorun(function() {
 		// prints how long ago the timestamp was made, every second
-		console.log(Chronos.liveMoment(timestamp).fromNow());
+		console.log(Chronos.moment(timestamp).fromNow());
 	});
 ```
 	
 _Note: this uses a `Chronos.Timer` under the hood. This timer is started automatically when you call `.liveMoment`_
 
-## Chronos.liveUpdate(interval)
+## Chronos.update(interval)
 When called from inside a Blaze helper or other reactive context, it will setup a timer once and make the context dependent on the timer. What this means is that for example the helper will we re-run every time the timer updates.
 
 Usage:
 
 ```javascript
 // make context live updating. defaults to an interval of 1000m.
-Chronos.liveUpdate(interval);
+Chronos.update(interval);
 ```
 
 _It returns the `Chronos.Timer` that drives the updates._
@@ -102,7 +123,7 @@ Template.foo.helpers({
 	
 	// returns a random number between 0 and 10, every second
 	randomNumber : function() {
-		Chronos.liveUpdate();
+		Chronos.update();
 		return Math.round( Math.random() * 10 );
 	}
 });
@@ -115,13 +136,13 @@ Example with autorun:
 var count = 0;
 	
 Tracker.autorun(function() {
-	Chronos.liveUpdate();
+	Chronos.update();
 	console.log(count);
 	count++;
 });
 ```
 	
-_Note: this uses a `Chronos.Timer` under the hood. This timer is started automatically when you call `.liveUpdate`_
+_Note: this uses a `Chronos.Timer` under the hood. This timer is started automatically when you call `.update`_
 
 
  
@@ -199,7 +220,15 @@ timer.stop();
 [MIT License](LICENSE.txt)
 
 ## Changelog
-
+ - 0.5.0
+     - add new method `Chronos.now()`, which is a reactive replacement for `Date.now()`
+     - fixed a build error which prevented Chronos to work on windows (there was a colon in a filename)
+     - renamed some methods to stay closer to their non-reactive counterparts (with aliases in place to prevent breakage):
+     	- Chronos.liveMoment() -> Chronos.moment()
+     	- Chronos.liveUpdate() -> Chronos.update()
+     	- Chronos.currentTime() -> Chronos.date()
+ - 0.4.1
+ 	- fixed regression where the momentjs package from Atmosphere didn't work anymore
  - 0.4.0
     - fixed a bug causing a ReferenceError when `liveMoment` is called and moment is imported as a module
   ([#10](https://github.com/remcoder/chronos/issues/10))

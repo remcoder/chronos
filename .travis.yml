@@ -10,4 +10,4 @@ install:
   - "npm install -g spacejam"
 
 script:
-  - "spacejam test-packages ./"
+  - "spacejam test-packages --driver-package=practicalmeteor:mocha-console-runner ./"
