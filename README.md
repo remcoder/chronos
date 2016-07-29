@@ -199,7 +199,15 @@ timer.stop();
 [MIT License](LICENSE.txt)
 
 ## Changelog
-
+ - 0.5.0
+     - add new method `Chronos.now()`, which is a reactive replacement for `Date.now()`
+     - fixed a build error which prevented Chronos to work on windows (there was a colon in a filename)
+     - renamed some methods to stay closer to their non-reactive counterparts (with aliases in place to prevent breakage):
+     	- Chronos.liveMoment() -> Chronos.moment()
+     	- Chronos.liveUpdate() -> Chronos.update()
+     	- Chronos.currentTime() -> Chronos.date()
+ - 0.4.1
+ 	- fixed regression where the momentjs package from Atmosphere didn't work anymore
  - 0.4.0
     - fixed a bug causing a ReferenceError when `liveMoment` is called and moment is imported as a module
   ([#10](https://github.com/remcoder/chronos/issues/10))
