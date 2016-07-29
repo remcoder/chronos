@@ -25,7 +25,6 @@ Package.onTest(function(api) {
     moment: '2.13.0'
   });
   api.use('remcoder:chronos');
-  api.use('practicalmeteor:mocha');
   api.use('practicalmeteor:chai');
   api.mainModule('unittests.js');
 });
