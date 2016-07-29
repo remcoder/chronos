@@ -11,6 +11,7 @@ $ meteor add remcoder:chronos
 ### API overview
 
  * __Chronos.date__ - a reactive replacement for `new Date()`
+ * __Chronos.now__  - a reactive replacement for `Date.now()`
  * __Chronos.moment__ - a reactive replacement for `moment()` 
  * __Chronos.update__ - trigger reactive updates with a single call 
  * __Chronos.Timer__ - a simple reactive timer
@@ -34,7 +35,27 @@ Template.foo.helpers({
    }
 });
 ```
-	
+
+## Chronos.now(interval)
+A reactive replacement for `Date.now`. It returns the milliseconds since the start of the epoch and triggers reactive updates.
+Optionally pass an `interval` in milliseconds. The default is 1000ms (1 second).
+
+Usage:
+
+```html
+<template name="foo">
+   millis: {{millis}}
+</template>
+```
+
+```javascript
+Template.foo.helpers({
+   millis : function() {
+       return Chronos.now(); // updates every second
+   }
+});
+```
+
 ## Chronos.moment(args...)
 A reactive replacement for the global function `moment()` as provided by [moment.js](http://momentjs.com/). This reactive version will trigger live updates, for live timestamps and such.
  You'll need to include moment.js yourself (and the reason is that there are [several different versions of momentjs on Atmosphere](https://atmospherejs.com/?q=moment)).
