@@ -10,12 +10,12 @@ $ meteor add remcoder:chronos
 
 ### API overview
 
- * __Chronos.currentTime__ - a reactive replacement for `new Date()`
- * __Chronos.liveMoment__ - a reactive replacement for `moment()` 
- * __Chronos.liveUpdate__ - trigger reactive updates with a single call 
+ * __Chronos.date__ - a reactive replacement for `new Date()`
+ * __Chronos.moment__ - a reactive replacement for `moment()` 
+ * __Chronos.update__ - trigger reactive updates with a single call 
  * __Chronos.Timer__ - a simple reactive timer
 
-## Chronos.currentTime(interval)
+## Chronos.date(interval)
 A reactive replacement for `new Date`. It returns a `Date` object and triggers reactive updates.
 Optionally pass an `interval` in milliseconds. The default is 1000ms (1 second).
 
@@ -30,12 +30,12 @@ Usage:
 ```javascript
 Template.foo.helpers({
    currentTime : function() {
-       return Chronos.currentTime(); // updates every second
+       return Chronos.date(); // updates every second
    }
 });
 ```
 	
-## Chronos.liveMoment(args...)
+## Chronos.moment(args...)
 A reactive replacement for the global function `moment()` as provided by [moment.js](http://momentjs.com/). This reactive version will trigger live updates, for live timestamps and such.
  You'll need to include moment.js yourself (and the reason is that there are [several different versions of momentjs on Atmosphere](https://atmospherejs.com/?q=moment)).
 
@@ -43,7 +43,7 @@ Usage:
 
 ```javascript
 // call with the same params as moment()
-Chronos.liveMoment(/* arguments */); 
+Chronos.moment(/* arguments */); 
 ```
  
 Example template + helper:
@@ -59,7 +59,7 @@ var start = new Date();
 
 Template.foo.helpers({
 		timeSpent : function() {
-    		return Chronos.liveMoment(start).fromNow();
+    		return Chronos.moment(start).fromNow();
 		}
 });
 ```
@@ -71,20 +71,20 @@ Example with autorun:
 	
 	Tracker.autorun(function() {
 		// prints how long ago the timestamp was made, every second
-		console.log(Chronos.liveMoment(timestamp).fromNow());
+		console.log(Chronos.moment(timestamp).fromNow());
 	});
 ```
 	
 _Note: this uses a `Chronos.Timer` under the hood. This timer is started automatically when you call `.liveMoment`_
 
-## Chronos.liveUpdate(interval)
+## Chronos.update(interval)
 When called from inside a Blaze helper or other reactive context, it will setup a timer once and make the context dependent on the timer. What this means is that for example the helper will we re-run every time the timer updates.
 
 Usage:
 
 ```javascript
 // make context live updating. defaults to an interval of 1000m.
-Chronos.liveUpdate(interval);
+Chronos.update(interval);
 ```
 
 _It returns the `Chronos.Timer` that drives the updates._
@@ -102,7 +102,7 @@ Template.foo.helpers({
 	
 	// returns a random number between 0 and 10, every second
 	randomNumber : function() {
-		Chronos.liveUpdate();
+		Chronos.update();
 		return Math.round( Math.random() * 10 );
 	}
 });
@@ -115,13 +115,13 @@ Example with autorun:
 var count = 0;
 	
 Tracker.autorun(function() {
-	Chronos.liveUpdate();
+	Chronos.update();
 	console.log(count);
 	count++;
 });
 ```
 	
-_Note: this uses a `Chronos.Timer` under the hood. This timer is started automatically when you call `.liveUpdate`_
+_Note: this uses a `Chronos.Timer` under the hood. This timer is started automatically when you call `.update`_
 
 
  
