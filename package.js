@@ -1,7 +1,7 @@
 Package.describe({
   name: 'remcoder:chronos',
   summary: 'Reactive time utilities. Includes reactive replacements for new Date(), Date.now() and moment()',
-  version: '1.0.0',
+  version: '0.5.0',
   git: 'https://github.com/remcoder/chronos'
 });
 
@@ -15,7 +15,7 @@ Package.onUse(function(api) {
     moment: '2.13.0'
   });
   api.export('Chronos');
-  api.addFiles('remcoder:chronos.js');
+  api.addFiles('chronos.js');
 });
   
 Package.onTest(function(api) {
